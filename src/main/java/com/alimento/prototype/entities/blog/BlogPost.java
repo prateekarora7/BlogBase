@@ -31,8 +31,7 @@ public class BlogPost {
     @Column(name = "author_name")
     private String authorName;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "slug", referencedColumnName = "slug")
+    @OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("blog-block")
     private List<ContentBlock> blocks;
 

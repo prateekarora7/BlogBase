@@ -31,6 +31,7 @@ public class ContentBlock {
     private String url; // For images or external embeds
 
     @ManyToOne
+    @JoinColumn(name = "slug", referencedColumnName = "slug")
     @JsonBackReference("blog-block")
     private BlogPost blogPost;
 

@@ -30,19 +30,28 @@ public class BlogPostController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @PostMapping("/update/{slug}")
+    public ResponseEntity<BlogPost> updateBlogPost(@PathVariable String slug, @RequestBody BlogPostRequest blogPostRequest){
+        BlogPost blogPost = blogPostService.updateBlogPost(slug, blogPostRequest);
+        return new ResponseEntity<>(blogPost, HttpStatus.OK);
+    }
+
     @GetMapping("/id/{blogId}")
     public ResponseEntity<BlogPost> getBlogPostById(@PathVariable long blogId){
-        return new ResponseEntity<>(blogPostService.getBlogPostbyId(blogId), HttpStatus.OK);
+        BlogPost blogPost = blogPostService.getBlogPostbyId(blogId);
+        return new ResponseEntity<>(blogPost, HttpStatus.OK);
     }
 
     @GetMapping("/{slug}")
     public ResponseEntity<BlogPost> getBlogPostBySlug(@PathVariable String slug){
-        return new ResponseEntity<>(blogPostService.getBlogPostBySlug(slug), HttpStatus.OK);
+        BlogPost blogPost = blogPostService.getBlogPostBySlug(slug);
+        return new ResponseEntity<>(blogPost, HttpStatus.OK);
     }
 
     @GetMapping("/tag/{tagName}")
     public ResponseEntity<List<BlogPost>> getPostsByTagName(@PathVariable String tagName){
-        return new ResponseEntity<>(blogPostService.findByTags_TagName(tagName), HttpStatus.OK);
+        List<BlogPost> blogPosts = blogPostService.findByTags_TagName(tagName);
+        return new ResponseEntity<>(blogPosts, HttpStatus.OK);
     }
 
     @DeleteMapping("delete/slug/{slug}")

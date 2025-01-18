@@ -22,7 +22,7 @@ public class SlugUtil {
         return baseSlug;
     }
 
-    public static String generateUniqueSlug(List<String> matchingSlugs, String baseSlug){     // Unique Slug method will generate unique slug by adding numbering to the end of slug if slug is already associated with a previously uploaded blog
+    public String generateUniqueSlug(List<String> matchingSlugs, String baseSlug){     // Unique Slug method will generate unique slug by adding numbering to the end of slug if slug is already associated with a previously uploaded blog
 
         String regex = ".*-\\d+$"; // Regex for matching the numbers
 

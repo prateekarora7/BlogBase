@@ -22,63 +22,61 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity saveUser(@RequestBody User user){
+    public ResponseEntity saveUser(@RequestBody User user){  // EndPoint to save a User
         userService.saveUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username){
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username){ //Endpoint to get User using its username
         User user = userService.getUserByUsername(username);
-        //if(user == null) return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email){
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email){ //Endpoint to get User using its email
         User user = userService.getUserByEmail(email);
-        //if(user == null) return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/created-on/{date}")
-    public ResponseEntity<List<User>> getUsersByCreationDate(@PathVariable LocalDate date){
+    public ResponseEntity<List<User>> getUsersByCreationDate(@PathVariable LocalDate date){ //Endpoint to get User using its registration date
         List<User> users = userService.getUsersByCreationDate(date);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PutMapping("/update/username/{oldUsername}")
-    public ResponseEntity updateUsername(@PathVariable String oldUsername, @RequestParam(required = true) String newUsername){
+    public ResponseEntity updateUsername(@PathVariable String oldUsername, @RequestParam(required = true) String newUsername){ //Endpoint to get User update username. Using old username to find the user first
         userService.updateUsername(oldUsername, newUsername);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("/update/phone-number/{username}")
-    public ResponseEntity updatePhoneNumber(@PathVariable String username, @RequestParam(required = true)String newPhoneNumber){
+    public ResponseEntity updatePhoneNumber(@PathVariable String username, @RequestParam(required = true)String newPhoneNumber){ //Endpoint to update user's Phone Number. Using username to find the user
         userService.updatePhoneNumber(username, newPhoneNumber);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("update/name/{username}")
-    public ResponseEntity updateName(@PathVariable String username, @RequestParam(required = true) String firstName, @RequestParam(required = true) String lastName) {
+    public ResponseEntity updateName(@PathVariable String username, @RequestParam(required = true) String firstName, @RequestParam(required = true) String lastName) { //Endpoint to update Name of a user. Using username to find the user
         userService.updateName(username, firstName, lastName);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("update/password/{username}")
-    public ResponseEntity updatePassword(@PathVariable String username, @RequestBody UpdatePasswordRequest request) {
+    public ResponseEntity updatePassword(@PathVariable String username, @RequestBody UpdatePasswordRequest request) { //EndPoint to Update the password for an account. Finding user using username
         userService.updatePassword(username, request.getOldPassword(), request.getNewPassword());
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/username/{username}")
-    public ResponseEntity deleteUserByUsername(@PathVariable String username) {
+    public ResponseEntity deleteUserByUsername(@PathVariable String username) { // Endpoint to delete a User using its username
         userService.deleteUserByUsername(username);
         return new ResponseEntity(HttpStatus.OK);
     }
     
     @DeleteMapping("/delete/email/{email}")
-    public ResponseEntity deleteUserByEmail(@PathVariable String email) {
+    public ResponseEntity deleteUserByEmail(@PathVariable String email) { // Endpoint to delete a user using its email
        userService.deleteUserByEmail(email);
         return new ResponseEntity(HttpStatus.OK);
     }

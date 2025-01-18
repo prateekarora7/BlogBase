@@ -17,4 +17,6 @@ public interface BlogPostService {
     List<BlogPost> findByTags_TagName(@Param("tagName") String tagName);
 
     void deleteBySlug(@Param("slug") String slug);
+
+    BlogPost updateBlogPost(String oldSlug, BlogPostRequest blogPostRequest);
 }

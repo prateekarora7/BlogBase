@@ -1,5 +1,6 @@
 package com.alimento.prototype.repositories.blog;
 
+import com.alimento.prototype.dtos.blog.BlogPostRequest;
 import com.alimento.prototype.entities.blog.BlogPost;
 import com.alimento.prototype.entities.blog.Tag;
 import jakarta.transaction.Transactional;
