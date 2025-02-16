@@ -145,6 +145,8 @@ public class BlogPostServiceImpl implements BlogPostService {
             tag.setTagName(tag.getTagName().toLowerCase());
         }).toList();
 
+        System.out.println(tagsProcessor(allTags));
+
         Set<Tag> existingTags = new HashSet<>();  // This set stores already existing tags in the database
         Set<Tag> newTags = new HashSet<>();  // This set stores new tags, which are not in the database
         CompletableFuture<Void> existingTagsFuture = CompletableFuture.runAsync(() -> { // Using a new thread to match if the tag exists in database or not and will be added to the sets accordingly
@@ -190,10 +192,32 @@ public class BlogPostServiceImpl implements BlogPostService {
                 .filter(tag -> !existingTags.contains(tag))  // Filter out the existing tags
                 .collect(Collectors.toSet());
         newTags.forEach(tag -> tagRepository.save(tag));
+        
         savedBlogPost.getTags().addAll(notAssociatedTags);
         blogPostRepository.save(savedBlogPost);
-
         return blogPostRepository.getBlogPostByBlogId(savedBlogPost.getBlogId());
 
+    }
+
+    public List<Set<Tag>> tagsProcessor(List<Tag> tags){
+        List<Tag> allTags = tags.stream().peek(tag -> {
+            tag.setTagName(tag.getTagName().toLowerCase());
+        }).toList();
+
+        Set<Tag> existingTags = new HashSet<>();  // This set stores already existing tags in the database
+        Set<Tag> newTags = new HashSet<>();  // This set stores new tags, which are not in the database
+
+        for (Tag tag : allTags) {
+            if(tagRepository.findByTagName(tag.getTagName()).isPresent()){
+                existingTags.add(tag);
+            }
+            else{
+                newTags.add(tag);
+            }
+        }
+
+        newTags.forEach(tag -> tagRepository.save(tag));
+
+        return Arrays.asList(existingTags, newTags);
     }
 }

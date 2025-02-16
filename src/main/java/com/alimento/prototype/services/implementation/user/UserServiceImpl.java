@@ -7,7 +7,9 @@ import com.alimento.prototype.exceptions.UsernameAlreadyExistsException;
 import com.alimento.prototype.exceptions.UsernameNotFoundException;
 import com.alimento.prototype.repositories.user.UserRepository;
 import com.alimento.prototype.services.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,11 +19,18 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
+
+
 
     @Override
     public void saveUser(User user) throws RuntimeException{  // This method is used to save or register new user
@@ -34,9 +43,10 @@ public class UserServiceImpl implements UserService {
 
         if(usernameExists) throw new UsernameAlreadyExistsException("User with this username already exists");
 
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
         //saving user if no runtime exception is thrown
         userRepository.saveUser(
-                user.getEmail(), user.getPassword(), user.getUsername(), user.getFirstName(), user.getLastName(), user.getPhoneNo(), LocalDateTime.now()
+                user.getEmail(), encryptedPassword, user.getUsername(), user.getFirstName(), user.getLastName(), user.getPhoneNo(), LocalDateTime.now()
         );
     }
 
